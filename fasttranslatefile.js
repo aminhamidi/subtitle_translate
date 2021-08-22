@@ -350,11 +350,28 @@
 
 
 const puppeteer = require('puppeteer');
-const express = require('express')
+const express = require('express');
+const patht = require('path');
 const fs = require('fs');
 
 
-const app = express()
+
+if (fs.existsSync('./files') == false) {
+
+    (async () => { 
+
+        fs.promises.mkdir(patht.join(`./files/`));
+    
+        fs.promises.mkdir(patht.join(`./files/destination`));
+    
+        fs.promises.mkdir(patht.join(`./files/sourse`));
+
+    })();
+
+
+}
+
+
 
 
 function convetToSrt(path) {
@@ -510,7 +527,7 @@ async function clearing(path) {
 
 
 
-    fs.unlinkSync(soursePath + path, () => { });
+    fs.unlinkSync(soursePath + path);
 
     fs.appendFile(soursePath + path, final + "", function () {
         convetToTxt(soursePath + path);
@@ -608,7 +625,7 @@ for (let i = 0; i < lifeList.length; i++) {
             console.log("subtitle is teranstated :)");
         });
 
-        fs.unlinkSync(soursePath + lifeList[i], () => { });
+        fs.unlinkSync(soursePath + lifeList[i]);
 
     })()
 
@@ -806,7 +823,7 @@ for (let i = 0; i < lifeList.length; i++) {
 
 
 
-//     fs.unlinkSync(soursePath + path, () => { });
+//     fs.unlinkSync(soursePath + path);
 
 //     fs.appendFile(soursePath + path, final + "", function () {
 //     });
@@ -902,7 +919,7 @@ for (let i = 0; i < lifeList.length; i++) {
 //         console.log("subtitle is teranstated :)");
 //     });
 
-//     fs.unlinkSync(soursePath + lifeList, () => { });
+//     fs.unlinkSync(soursePath + lifeList);
 
 
 //     return new Promise((resolve, rejects) => {
