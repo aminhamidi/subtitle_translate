@@ -358,12 +358,12 @@ const fs = require('fs');
 
 if (fs.existsSync('./files') == false) {
 
-    (async () => { 
+    (async () => {
 
         fs.promises.mkdir(patht.join(`./files/`));
-    
+
         fs.promises.mkdir(patht.join(`./files/destination`));
-    
+
         fs.promises.mkdir(patht.join(`./files/sourse`));
 
     })();
@@ -576,6 +576,16 @@ for (let i = 0; i < lifeList.length; i++) {
 
         var final = [];
 
+
+
+        let timeLine = [];
+
+        let enStr = [];
+
+        let faStr = [];
+
+
+
         var forFinal = await fs.promises.readFile(soursePath + lifeList[i], 'utf8');
 
         final = (forFinal.split('\r\n')).map((value, index) => {
@@ -583,6 +593,8 @@ for (let i = 0; i < lifeList.length; i++) {
                 let temp1 = value.slice(0, 12);
                 let temp2 = value.slice(value.length - 12);
                 return `${temp1} --> ${temp2}`;
+            } else if (value.length != 0) {
+                enStr.push(value);
             }
         });
 
@@ -609,15 +621,40 @@ for (let i = 0; i < lifeList.length; i++) {
 
 
 
+        // با این حرکت می تونیم دوتا sub داشته باشیم 
         for (let i = 0; i < data.length; i++) {
             if (data[i] === '*************time*****************') {
-                resultString += final[i] + '\r\n';
+                timeLine.push(final[i]);
             } else if (data[i] === '******************************') {
-                resultString += '\r\n\r\n';
+
             } else {
-                resultString += data[i] + '\r\n\r\n';
+                faStr.push(data[i]);
             }
         }
+
+    
+        for (let i = 0; i < timeLine.length; i++) {
+
+            resultString += timeLine[i] + '\r\n';
+            resultString += '{\\an8}' + enStr[i] + '\r\n\r\n';
+
+            resultString += timeLine[i] + '\r\n';
+            resultString += '{\\an2}' + faStr[i] + '\r\n\r\n';
+
+            resultString += '\r\n\r\n';
+
+        }
+
+
+        // for (let i = 0; i < data.length; i++) {
+        //     if (data[i] === '*************time*****************') {
+        //         resultString += final[i] + '\r\n';
+        //     } else if (data[i] === '******************************') {
+        //         resultString += '\r\n\r\n';
+        //     } else {
+        //         resultString += data[i] + '\r\n\r\n';
+        //     }
+        // }
 
 
         fs.appendFile(destinationPath + lifeList[i], resultString + "", function () {//اگر با یه رشته جمعش نکنم نمی شه 
